@@ -1,12 +1,24 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react'
-import FilterTable from '../dashborad/FilterTable'
+import agent from '../../app/api/agent'
+import { Employee } from '../../app/model/Employee'
 
 export default function DoctorTable() {
+
+     const [employee, setEmployee] = useState<Employee[]>([]);
+
+     useEffect(() => {
+          agent.Employees.list()
+               .then(response => {
+                    setEmployee(response);
+               })
+     }, [])
+
      return (
           <Segment style={{ padding: '2rem' }}>
 
-               <h3 style={{ paddingBottom: '1rem' }}>Latest patient data</h3>
+               <h3 style={{ paddingBottom: '1rem' }}>Latest Doctor data</h3>
 
                <table className="ui basic table mytable">
                     <thead>
@@ -24,36 +36,27 @@ export default function DoctorTable() {
                          </tr>
                     </thead>
                     <tbody>
-                         <tr>
-                              <th style={{ paddingLeft: '.8rem' }}>
-                                   <input type="checkbox" />
-                              </th>
-                              <td>DC124</td>
-                              <td>...</td>
-                              <td>Dr. John</td>
-                              <td>Lilki</td>
-                              <td>Medicine</td>
-                              <td>020 566657777</td>
-                              <td>
-                                   <a style={{ marginRight: '1rem' }} href="">Edit</a>
-                                   <a href="">Delete</a>
-                              </td>
-                         </tr>
-                         <tr>
-                              <th style={{ paddingLeft: '.8rem' }}>
-                                   <input type="checkbox" />
-                              </th>
-                              <td>DC124</td>
-                              <td>...</td>
-                              <td>Dr. Jamie</td>
-                              <td>Harington</td>
-                              <td>Medicine</td>
-                              <td>020 566657777</td>
-                              <td>
-                                   <a style={{ marginRight: '1rem' }} href="">Edit</a>
-                                   <a href="">Delete</a>
-                              </td>
-                         </tr>
+                         {
+                              employee.map((item: any) => {
+                                   return (
+                                        <tr key={item.emp_id}>
+                                             <th style={{ paddingLeft: '.8rem' }}>
+                                                  <input type="checkbox" />
+                                             </th>
+                                             <td>{item.emp_id}</td>
+                                             <td>...</td>
+                                             <td>{item.emp_name}</td>
+                                             <td>{item.emp_surname}</td>
+                                             <td>{item.dep_name}</td>
+                                             <td>{item.phone}</td>
+                                             <td>
+                                                  <Link style={{ marginRight: '1rem' }} to={''} >Edit</Link>
+                                                  <Link to={''}>Delete</Link>
+                                             </td>
+                                        </tr>
+                                   )
+                              })
+                         }
                     </tbody>
                </table>
 

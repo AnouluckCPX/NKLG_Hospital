@@ -1,83 +1,86 @@
-import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
-import { IconDashborad, IconActivity, IconCalendar, IconInvoice, IconDoctor, IconDepartment, IconPatient } from './IconMenuLeft'
+import {
+     IconDashborad, IconActivity, IconCalendar,
+     IconInvoice, IconDoctor, IconDepartment,
+     IconPatient,
+     IconDrugs,
+     IconCategoryDrugs,
+     IconPrescription
+} from './IconMenuLeft'
 
 export default function SideMenu() {
-
-     const history = useHistory();
-
      return (
           <>
                <Menu className="ui vertical menu">
                     <div className="item">
                          <div className="header">General</div>
                          <div className="menu">
-                              <span>
-                                   <a className="item customfont"
-                                        onClick={() => history.push('/dashborad')}>
-                                        <span><IconDashborad /></span>
-                                        Dashborad
-                                   </a>
-                              </span>
-                              <span>
-                                   <a className="item customfont"
-                                        onClick={() => history.push('/activity')}>
-                                        <span><IconActivity /></span>
-                                        Activity
-
-                                   </a>
-                              </span>
-                              <span>
-                                   <a className="item customfont">
-                                        <span><IconCalendar /></span>
-                                        Appointments
-                                   </a>
-                              </span>
-                              <span>
-                                   <a className="item customfont">
-                                        <span><IconInvoice /></span>
-                                        Billing
-                                   </a>
-                              </span>
-
+                              <Link className='item customfont' to={('/dashborad')} >
+                                   <IconDashborad />
+                                   Dashborad
+                              </Link>
+                              <Link className='item customfont' to={('/activity')} >
+                                   <IconActivity />
+                                   Activity
+                              </Link>
+                              <Link className='item customfont' to={('')} >
+                                   <IconCalendar />
+                                   Appointments
+                              </Link>
+                              <Link className='item customfont' to={('')} >
+                                   <IconInvoice />
+                                   Billing
+                              </Link>
                          </div>
                     </div>
                     <div className="item">
                          <div className="header">Phamacologis</div>
                          <div className="menu">
-                              <a className="item customfont">Prescription</a>
-                              <a className="item customfont">Category</a>
-                              <a className="item customfont">Medicaine</a>
+                              <Link className='item customfont' to={('')} >
+                                   <IconPrescription />
+                                   Prescription
+                              </Link>
+                              <Link className='item customfont' to={('')} >
+                                   <IconCategoryDrugs />
+                                   Category
+                              </Link>
+                              <Link className='item customfont' to={('')} >
+                                   <IconDrugs />
+                                   Medicaine
+                              </Link>
                          </div>
                     </div>
                     <div className="item">
                          <div className="header">Empolyee</div>
                          <div className="menu">
-                              <span>
-                                   <a className="item customfont">
-                                        <IconDepartment /> Department
-                                   </a>
-                              </span>
-                              <span>
-                                   <a className="item customfont"
-                                        onClick={() => history.push('/doctor')} >
-                                        <IconDoctor /> Doctor
-                                   </a>
-                              </span>
-                              <span>
-                                   <a className="item customfont">
-                                        <IconPatient /> Patient
-                                   </a>
-                              </span>
+                              <Link className='item customfont' to={('/department')} >
+                                   <IconDepartment />
+                                   Department
+                              </Link>
+                              <Link className='item customfont' to={('/doctor')} >
+                                   <IconDoctor />
+                                   Doctor
+                              </Link>
+                              <Link className='item customfont' to={('')} >
+                                   <IconPatient />
+                                   Patient
+                              </Link>
                          </div>
                     </div>
 
                     <div className="item">
                          <div className="header">Setting</div>
                          <div className="menu">
-                              <a className="item customfont">Rate Money</a>
-                              <a className="item customfont">App Setting</a>
-                              <a className="item customfont">Language</a>
+                              <Link className='item customfont' to={('')} >
+                                   Rate Money
+                              </Link>
+                              <Link className='item customfont' to={('')} >
+                                   App Setting
+                              </Link>
+                              <Link className='item customfont' to={('')} >
+                                   Language
+                              </Link>
                          </div>
                     </div>
                </Menu>

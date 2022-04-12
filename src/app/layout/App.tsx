@@ -1,9 +1,7 @@
-import { BrowserRouter, Route } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
+import { Route } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import LoginPage from '../../features/login/LoginPage';
 import NavBar from './NavBar';
-
 
 function App() {
   return (

@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Header, Segment } from 'semantic-ui-react'
 
 export default function LoginPage() {
-     const history = useHistory();
+     
      const [isChecked, setIsChecked] = useState(false);
 
      const handleOnChange = () => {

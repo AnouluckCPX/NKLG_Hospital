@@ -1,13 +1,9 @@
-import Calendar from "react-calendar";
 import { Route, Switch } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
 import SideMenu from "../../app/layout/SideMenu";
 import ActivityContainter from "../activity/ActivityContainter";
 import ContainerDashborad from "../dashborad/ContainerDashborad";
-import HeaderDisplay from "../dashborad/HeaderDisplay";
-import MyChart from "../dashborad/MyChart";
-import SerivesMenu from "../dashborad/SerivesMenu";
-import TableAppoint from "../dashborad/TableAppoint";
+import ContainerDepartment from "../department/ContainerDepartment";
 import DoctorContainer from "../doctor/DoctorContainer";
 
 export default function HomePage() {
@@ -26,6 +22,7 @@ export default function HomePage() {
                                         <Route path="/dashborad" component={ContainerDashborad} />
                                         <Route path="/activity" component={ActivityContainter} />
                                         <Route path="/doctor" component={DoctorContainer} />
+                                        <Route path="/department" component={ContainerDepartment} />
                                    </Switch>                             
                               </div>
                          </>
