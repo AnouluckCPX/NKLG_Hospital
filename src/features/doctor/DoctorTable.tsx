@@ -1,25 +1,17 @@
-import { useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
-import { Segment } from 'semantic-ui-react'
-import agent from '../../app/api/agent'
-import { Employee } from '../../app/model/Employee'
+import { Button, Item, Segment } from 'semantic-ui-react'
+import { useStore } from '../../app/stores/store';
 
-export default function DoctorTable() {
+export default observer(function DoctorTable() {
 
-     const [employee, setEmployee] = useState<Employee[]>([]);
-
-     useEffect(() => {
-          agent.Employees.list()
-               .then(response => {
-                    setEmployee(response);
-               })
-     }, [])
+     const { employeeStore } = useStore();
+     const { employeesByDate } = employeeStore;
 
      return (
+
           <Segment style={{ padding: '2rem' }}>
-
                <h3 style={{ paddingBottom: '1rem' }}>Latest Doctor data</h3>
-
                <table className="ui basic table mytable">
                     <thead>
                          <tr className='' style={{ background: '#EDEBEB', paddingLeft: '1rem' }}>
@@ -37,7 +29,7 @@ export default function DoctorTable() {
                     </thead>
                     <tbody>
                          {
-                              employee.map((item: any) => {
+                              employeesByDate.map(item => {
                                    return (
                                         <tr key={item.emp_id}>
                                              <th style={{ paddingLeft: '.8rem' }}>
@@ -47,10 +39,15 @@ export default function DoctorTable() {
                                              <td>...</td>
                                              <td>{item.emp_name}</td>
                                              <td>{item.emp_surname}</td>
-                                             <td>{item.dep_name}</td>
+                                             <td>{item.dep_id}</td>
                                              <td>{item.phone}</td>
                                              <td>
-                                                  <Link style={{ marginRight: '1rem' }} to={''} >Edit</Link>
+                                                  <Button
+                                                       style={{ marginRight: '1rem' }}
+                                                       onClick={() => employeeStore.selectEmployee(item.emp_id)}
+                                                       content='Edit' />
+                                                  {/* <Link style={{ marginRight: '1rem' }}
+                                                    onClick={} /> */}
                                                   <Link to={''}>Delete</Link>
                                              </td>
                                         </tr>
@@ -62,4 +59,4 @@ export default function DoctorTable() {
 
           </Segment>
      )
-}
+})

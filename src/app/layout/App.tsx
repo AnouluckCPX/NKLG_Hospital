@@ -1,9 +1,21 @@
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import LoginPage from '../../features/login/LoginPage';
+import { useStore } from '../stores/store';
+import LoadingComponent from './LoadingComponent';
 import NavBar from './NavBar';
 
 function App() {
+  const {employeeStore} = useStore();
+
+  useEffect(()=> {
+    employeeStore.loadEmployees();
+  }, [employeeStore])
+
+  if(employeeStore.loadingInitial) return <LoadingComponent content='Loading app' />
+
   return (
     <>
       <Route exact path="/" component={LoginPage} />
@@ -20,4 +32,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

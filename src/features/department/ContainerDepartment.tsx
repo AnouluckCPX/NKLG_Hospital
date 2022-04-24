@@ -9,7 +9,9 @@ export default function ContainerDepartment() {
                     <Grid.Column width='12'>
                          <TableDepartment />
                     </Grid.Column>
-                    
+                    <Grid.Column width='4'>
+                         
+                    </Grid.Column>
                </Grid>
           </>
 

@@ -54,8 +54,8 @@ export const data = {
 export default function MyChart() {
   return (
 
-    <Segment>
-      <div>
+    <Segment >
+      <div className='con-chart'>
         <Bar width={580} height={200} options={options} data={data} />
       </div>
     </Segment>

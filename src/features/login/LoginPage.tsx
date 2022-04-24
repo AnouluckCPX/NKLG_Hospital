@@ -1,8 +1,9 @@
+import { observer } from 'mobx-react-lite';
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Header, Segment } from 'semantic-ui-react'
 
-export default function LoginPage() {
+export default observer(function LoginPage() {
      
      const [isChecked, setIsChecked] = useState(false);
 
@@ -46,4 +47,4 @@ export default function LoginPage() {
           </>
 
      )
-}
+})

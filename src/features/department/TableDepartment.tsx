@@ -1,9 +1,11 @@
+import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react'
 import agent from '../../app/api/agent';
 import { Department } from '../../app/model/Department'
 
-export default function TableDepartment() {
+export default observer(function TableDepartment() {
 
      const [deparment, setDepartment] = useState<Department[]>([]);
 
@@ -41,8 +43,8 @@ export default function TableDepartment() {
                                              <td>{item.dep_id}</td>
                                              <td>{item.dep_name}</td>
                                              <td>
-                                                  <a style={{ marginRight: '1rem' }} href="">Edit</a>
-                                                  <a href="">Delete</a>
+                                                  <Link style={{ marginRight: '1rem' }} to={''} >Edit</Link>
+                                                  <Link to={''}>Delete</Link>
                                              </td>
                                         </tr>
                                    )
@@ -53,4 +55,4 @@ export default function TableDepartment() {
                </table>
           </Segment>
      )
-}
+})

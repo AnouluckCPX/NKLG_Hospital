@@ -154,3 +154,14 @@ abbr[title] {
   color: #1d2026 !important;
   border: .5px solid #1d2026 !important;
 }
+
+.con-chart {
+  margin: 1.5em !important;
+}
+
+.header-frm{
+  width: 100%;
+  height: 20px;
+  background: #e4e4e4 ;
+  text-align: center;
+}

@@ -1,12 +1,15 @@
-import React from 'react'
 import { Button, Grid } from 'semantic-ui-react'
 import { IconDate, IconSort } from '../../app/layout/IconMenuFilter'
+import { useStore } from '../../app/stores/store'
 
 export default function DoctorFilter() {
+
+     const { employeeStore } = useStore();
+     
      return (
           <div style={{ width: '100%' }}>
 
-               <form className="ui form" style={{ padding: '1em' }}>
+               <div className="ui form" style={{ padding: '1em' }}>
                     <div className='' >
                          <div className='row'>
                               <Grid>
@@ -33,14 +36,18 @@ export default function DoctorFilter() {
                                         </div>
                                    </Grid.Column>
                                    <Grid.Column width='6' >
-                                        <div style={{textAlign:'end'}} >
-                                             <Button className='btn-create' content='New Doctor' />
+                                        <div style={{ textAlign: 'end' }} >
+                                             <Button
+                                                  onClick={() => employeeStore.openForm()}
+                                                  positive
+                                                  className='btn-create'
+                                                  content='New Doctor' />
                                         </div>
                                    </Grid.Column>
                               </Grid>
                          </div>
                     </div>
-               </form>
+               </div>
           </div>
      )
 }
