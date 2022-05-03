@@ -31,10 +31,10 @@ const requests = {
 
 const Employees = {
      list: () => requests.get<Employee[]>('/Employee'),
-     details: (id: string) => requests.get<Employee>(`/Employee/${id}`),
+     details: (emp_id: string) => requests.get<Employee>(`/Employee/${emp_id}`),
      create: (employee: Employee) => axios.post<void>(`/Employee/`, employee),
      update: (employee: Employee) => axios.put<void>(`Employee/${employee.emp_id}`, employee),
-     delete: (id: string) => axios.delete<void>(`/Employee/${id}`)
+     delete: (emp_id: string) => axios.delete<void>(`/Employee/${emp_id}`)
 }
 
 const Departments = {

@@ -1,62 +1,82 @@
 import { observer } from 'mobx-react-lite';
-import { Link } from 'react-router-dom';
-import { Button, Item, Segment } from 'semantic-ui-react'
+import { SyntheticEvent, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { Button, Item, Modal, Segment } from 'semantic-ui-react'
+import { Header, Icon } from 'semantic-ui-react'
+import { Employee } from '../../app/model/Employee';
 import { useStore } from '../../app/stores/store';
+import DoctorDetails from './detailed/DoctorDetails';
 
-export default observer(function DoctorTable() {
+interface Props {
+     employee: Employee
+}
+
+export default observer(function DoctorTable({ employee }: Props) {
 
      const { employeeStore } = useStore();
-     const { employeesByDate } = employeeStore;
+     const { deleteEmployee, loading } = employeeStore;
+     const [open, setOpen] = useState(false);
+
+     const [target, setTarget] = useState('');
+
+     function handleActivityDelete(e: SyntheticEvent<HTMLButtonElement>, emp_id: string) {
+          setTarget(e.currentTarget.name);
+          deleteEmployee(emp_id);
+     }
 
      return (
+          <tr>
+               <td>
+                    <Link to={`/employees/${employee.emp_id}`}>
+                         {employee.emp_id}
+                    </Link>
+               </td>
+               <td>...</td>
+               <td>{employee.emp_name}</td>
+               <td>{employee.emp_surname}</td>
+               <td>{employee.dep_name}</td>
+               <td>{employee.phone}</td>
+               <td>
+                    <Button
+                         // style={{padding:'0'}}
+                         as={Link}
+                         to={`/employees/${employee.emp_id}`}
+                         content='View'
+                    />
+                    <Modal
+                         closeIcon
+                         open={open}
+                         actions='inverted'
+                         trigger={<Button color='red'>Delete</Button>}
+                         onClose={() => setOpen(false)}
+                         onOpen={() => setOpen(true)}
+                    >
+                         <Header icon='archive' content='Archive Old Messages' />
+                         <Modal.Content>
+                              <p>
+                                   Your inbox is getting full, would you like us to enable automatic
+                                   archiving of old messages?
+                              </p>
+                         </Modal.Content>
+                         <Modal.Actions>
+                              <Button onClick={() => setOpen(false)}>
+                                   <Icon name='remove' /> No
+                              </Button>
 
-          <Segment style={{ padding: '2rem' }}>
-               <h3 style={{ paddingBottom: '1rem' }}>Latest Doctor data</h3>
-               <table className="ui basic table mytable">
-                    <thead>
-                         <tr className='' style={{ background: '#EDEBEB', paddingLeft: '1rem' }}>
-                              <th>
-                                   <input type="checkbox" />
-                              </th>
-                              <th>ID Doctor</th>
-                              <th>Image</th>
-                              <th>First Name</th>
-                              <th>Last Name</th>
-                              <th>Department</th>
-                              <th>Mobile No</th>
-                              <th>Action</th>
-                         </tr>
-                    </thead>
-                    <tbody>
-                         {
-                              employeesByDate.map(item => {
-                                   return (
-                                        <tr key={item.emp_id}>
-                                             <th style={{ paddingLeft: '.8rem' }}>
-                                                  <input type="checkbox" />
-                                             </th>
-                                             <td>{item.emp_id}</td>
-                                             <td>...</td>
-                                             <td>{item.emp_name}</td>
-                                             <td>{item.emp_surname}</td>
-                                             <td>{item.dep_id}</td>
-                                             <td>{item.phone}</td>
-                                             <td>
-                                                  <Button
-                                                       style={{ marginRight: '1rem' }}
-                                                       onClick={() => employeeStore.selectEmployee(item.emp_id)}
-                                                       content='Edit' />
-                                                  {/* <Link style={{ marginRight: '1rem' }}
-                                                    onClick={} /> */}
-                                                  <Link to={''}>Delete</Link>
-                                             </td>
-                                        </tr>
-                                   )
-                              })
-                         }
-                    </tbody>
-               </table>
+                              <Button
+                                   name={employee.emp_id}
+                                   loading={loading && target === employee.emp_id}
+                                   onClick={(e) => handleActivityDelete(e, employee.emp_id)}
+                                   floated='right'
+                                   content='Delete'
+                                   color='red' >
+                                   <Icon name='checkmark' />
+                                   Yes
+                              </Button>
 
-          </Segment>
+                         </Modal.Actions>
+                    </Modal>
+               </td>
+          </tr>
      )
 })

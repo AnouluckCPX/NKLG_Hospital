@@ -1,154 +1,128 @@
 import {
      Formik,
-     
+     Form,
 } from 'formik'
 import { values } from 'mobx';
 import { observer } from 'mobx-react-lite'
 import { stringify } from 'querystring';
 import { ChangeEvent, useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
-import { Button, Label, Segment, Select, Form } from 'semantic-ui-react';
+import { Link, useHistory, useParams } from 'react-router-dom'
+import { Button, Grid, Label, Segment, Select } from 'semantic-ui-react';
+import agent from '../../app/api/agent';
 import MyDateInput from '../../app/common/form/MyDateInput';
+import MySelectGender from '../../app/common/form/MySelectGender';
 import MySelectInput from '../../app/common/form/MySelectInput';
 import MyTextArea from '../../app/common/form/MyTextArea';
 import MyTextInput from '../../app/common/form/MyTextInput';
 import { departmentOptions } from '../../app/common/options/departmentOption';
 import { genderOptions } from '../../app/common/options/genderOption';
 import LoadingComponent from '../../app/layout/LoadingComponent';
+import { Department } from '../../app/model/Department';
 import { Employee } from '../../app/model/Employee';
 import { useStore } from '../../app/stores/store';
-
 
 export default observer(function FormInputEmployee() {
      const history = useHistory();
 
      const { employeeStore } = useStore();
-     const { createEmployee, selectedEmployee, closeForm, loading, loadingInitial } = employeeStore;
+     const { createEmployee, loading, loadingInitial, loadEmployee } = employeeStore;
+     const { emp_id } = useParams<{ emp_id: string }>();
 
-
-     const initialState = selectedEmployee ?? {
+     const [employee, setEmployee] = useState<Employee>({
           emp_id: '',
           emp_name: '',
           emp_surname: '',
           gender: '',
-          dob: '',
+          dob: null,
           address: '',
           phone: '',
-          dep_id: '',
-          craete_date: '',
-          edit_date: '',
+          dep_ip: '',
+          dep_name: '',
+          craete_date: null,
+          edit_date: null,
+     });
+
+     useEffect(() => {
+          if (emp_id) loadEmployee(emp_id).then(employee => console.log(employee))
+     }, [emp_id, loadEmployee])
+
+     function handleFormSubmit(employee: Employee) {
+          if (employee.emp_id.length >= 0) {
+               let newEmployee = {
+                    ...employee
+               }
+               createEmployee(newEmployee).then(() => {
+                    // window.location.href=`/employees/${employee.emp_id}`
+                    history.push(`/employees/${employee.emp_id}`)
+               })
+          } else {
+               console.log('Errors')
+          }
      }
 
-     const [employee, setEmployee] = useState(initialState);
-
-     function handleSubmit() {
-          createEmployee(employee)
-     }
-
-     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-          const { name, value } = event.target;
-          setEmployee({ ...employee, [name]: value })
-     }
-
-     // if (loadingInitial) return <LoadingComponent content='Loading employee...' />
+     if (loadingInitial) return <LoadingComponent content='Loading employee...' />
 
      return (
-          <div className='ui card'>
-               <div className='ui form' style={{ marginBottom: '1.5em' }}>
-                    <div className="content" style={{ height: '40px', background: '#f2f2f2', textAlign: 'center' }}>
-                         <h4 style={{ paddingTop: '.6em' }}>New employee</h4>
-                    </div>
-                    <Form className='field' onSubmit={handleSubmit} autoComplete='off' style={{ padding: '1em' }}>
+          <Grid>
+               <Grid.Column width='14'>
+                    <Segment clearing>
+                         <Formik
+                              initialValues={employee}
+                              onSubmit={values => handleFormSubmit(values)}
+                         >{({ handleSubmit, isSubmitting, dirty }) => (
+                              <Form className='ui form' onSubmit={handleSubmit} autoComplete='off' style={{ padding: '1em' }}>
+                                   <MyTextInput label='ID Employee' name='emp_id' />
 
-                         {/* <MyTextInput label='ID Employee' name='emp_id' value={} />
-                                   <MyTextInput label='First Name' name='emp_name' />
-                                   <MyTextInput label='Last Name' name='emp_surname' />
-                                   <MyTextInput label='Dep Name' name='dep_id' />
+                                   <div className='two fields'>
+                                        <MyTextInput label='First Name' name='emp_name' />
+                                        <MyTextInput label='Last Name' name='emp_surname' />
+                                   </div>
 
-                                   <MySelectInput label='Gender' option={genderOptions} name='gender' placeholder='Male' />
-
+                                   <div className='two fields'>
+                                        <MySelectGender label='Gender' option={genderOptions} name='gender' placeholder='Male' />
+                                        <div className='field'>
+                                             <label> Birth of day</label>
+                                             <MyDateInput
+                                                  dateFormat='d/MM/yyyy'
+                                                  placeholderText='D/MM/YYYY'
+                                                  name='dob'
+                                             />
+                                        </div>
+                                   </div>
+                                   <MySelectGender label='Dep Name' option={departmentOptions} name='dep_id' placeholder='Choose' />
+                                   <MyTextArea label='Address' name='address' rows={3} placeholder='Description' />
+                                   <MyTextInput label='Phone' name='phone' />
                                    <div className='field'>
-                                        <label> Birth of day</label>
+                                        <label> New Date</label>
                                         <MyDateInput
                                              dateFormat='d/MM/yyyy'
                                              placeholderText='D/MM/YYYY'
-                                             name='dob'
+                                             name='craete_date'
                                         />
                                    </div>
+                                   <div className='field'>
+                                        <label> Edit</label>
+                                        <MyDateInput
+                                             dateFormat='d/MM/yyyy'
+                                             placeholderText='D/MM/YYYY'
+                                             name='edit_date'
+                                        />
+                                   </div>
+                                   <Button
+                                        disabled={isSubmitting || !dirty}
+                                        loading={loading}
+                                        positive type='submit' content='Submit'
+                                        floated='right'
+                                   />
+                                   <Button as={Link} to='/employees' floated='right' type='button' content='Cancel' />
 
-                                   <MyTextArea label='Address' name='address' rows={3} placeholder='Description' />
+                              </Form>
+                         )}
+                         </Formik>
+                    </Segment>
+               </Grid.Column>
+          </Grid>
 
-                                   <MyTextInput label='Phone' name='phone' /> */}
-
-                         <Form.Input
-                              placeholder='ID'
-                              value={employee.emp_id}
-                              name='emp_id'
-                              onChange={handleInputChange}
-                         />
-                         <Form.Input
-                              placeholder='Name'
-                              value={employee.emp_name}
-                              name='emp_name'
-                              onChange={handleInputChange}
-                         />
-                         <Form.Input
-                              placeholder='Last'
-                              value={employee.emp_surname}
-                              name='emp_surname'
-                              onChange={handleInputChange}
-                         />
-                         <Form.TextArea
-                              placeholder='Address'
-                              value={employee.address}
-                              name='address'
-                              onChange={handleInputChange} />
-                         <Form.Input
-                              placeholder='Gender'
-                              value={employee.gender}
-                              name='gender'
-                              onChange={handleInputChange}
-                         />
-                         <Form.Input
-                              placeholder='Date'
-                              type='date'
-                              value={employee.dob}
-                              name='dob'
-                              onChange={handleInputChange} />
-                         <Form.Input
-                              placeholder='New Date'
-                              type='date'
-                              value={employee.craete_date}
-                              name='craete_date'
-                              onChange={handleInputChange} />
-                         <Form.Input
-                              placeholder='Edit Date'
-                              type='date'
-                              value={employee.edit_date}
-                              name='edit_date'
-                              onChange={handleInputChange} />
-                         <Form.Input
-                              placeholder='Phone'
-                              value={employee.phone}
-                              name='phone'
-                              onChange={handleInputChange} />
-                         <Form.Input
-                              placeholder='Dep ID'
-                              value={employee.dep_id}
-                              name='dep_id'
-                              onChange={handleInputChange} />
-
-                         <div  >
-                              <Button
-
-                                   loading={loading}
-                                   floated='right' positive type='submit' content='Submit' style={{ width: '110px' }} />
-                              <Button onClick={closeForm} floated='left' type='button' content='Cancel' style={{ width: '110px' }} />
-                         </div>
-
-                    </Form>
-               </div>
-          </div>
 
      )
 })

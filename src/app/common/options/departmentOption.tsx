@@ -3,3 +3,4 @@ export const departmentOptions = [
   {text: 'Neurology', value: 'DN002'},
   {text: 'obs& gyn', value: 'DN003'}
 ]
+

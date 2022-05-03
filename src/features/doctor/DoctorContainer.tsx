@@ -1,33 +1,31 @@
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { Card, Grid } from 'semantic-ui-react'
+import LoadingComponent from '../../app/layout/LoadingComponent';
 import { useStore } from '../../app/stores/store';
-import DoctorDetails from './DoctorDetails';
 import DoctorFilter from './DoctorFilter'
-import DoctorTable from './DoctorTable'
-import FormInputEmployee from './FormInputEmployee';
+import DoctorList from './DoctorList';
 
 
 export default observer(function DoctorContainer() {
-     
-     const {employeeStore} = useStore();
-     const {selectedEmployee, editMode} = employeeStore;
 
-  return (
-    <Grid>
-         <Grid.Column width='12'>
-              <Card fluid>
-                   <DoctorFilter
-                   />
-              </Card>
-              <DoctorTable 
-              
-              />
-         </Grid.Column>
-         <Grid.Column width='4'>
-              {selectedEmployee && !editMode && <DoctorDetails />}
-              {editMode && <FormInputEmployee />}
-         </Grid.Column>
+     const { employeeStore } = useStore();
+     const { loadEmployees, employeeRegistry } = employeeStore;
 
-    </Grid>
-  )
+     useEffect(() => {
+          if (employeeRegistry.size <= 1) loadEmployees();
+     }, [employeeRegistry.size, loadEmployees])
+
+     if (employeeStore.loadingInitial) return <LoadingComponent content='Loading app' />
+
+     return (
+          <Grid>
+               <Grid.Column width='15'>
+                    <Card fluid>
+                         <DoctorFilter />
+                    </Card>
+                    <DoctorList />
+               </Grid.Column>
+          </Grid>
+     )
 })

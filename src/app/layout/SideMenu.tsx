@@ -58,7 +58,7 @@ export default function SideMenu() {
                                    <IconDepartment />
                                    Department
                               </Link>
-                              <Link className='item customfont' to={('/doctor')} >
+                              <Link className='item customfont' to={('/employees')} >
                                    <IconDoctor />
                                    Doctor
                               </Link>

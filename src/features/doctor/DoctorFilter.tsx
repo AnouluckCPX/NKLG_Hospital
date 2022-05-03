@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { Button, Grid } from 'semantic-ui-react'
 import { IconDate, IconSort } from '../../app/layout/IconMenuFilter'
 import { useStore } from '../../app/stores/store'
@@ -38,7 +39,8 @@ export default function DoctorFilter() {
                                    <Grid.Column width='6' >
                                         <div style={{ textAlign: 'end' }} >
                                              <Button
-                                                  onClick={() => employeeStore.openForm()}
+                                                  as={NavLink}
+                                                  to='/createEmployee'
                                                   positive
                                                   className='btn-create'
                                                   content='New Doctor' />

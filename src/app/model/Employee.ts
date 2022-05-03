@@ -3,10 +3,11 @@ export interface Employee {
      emp_name:    string;
      emp_surname: string;
      gender:      string;
-     dob:         string;
+     dob:         Date | null;
      address:     string;
      phone:       string;
-     dep_id:    string;
-     craete_date: string;
-     edit_date: string;
+     dep_ip:      string;
+     dep_name:    string | null;
+     craete_date: Date | null;
+     edit_date: Date | null;
  }

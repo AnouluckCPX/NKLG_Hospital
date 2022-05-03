@@ -1,4 +1,4 @@
 export const genderOptions = [
-     {text: 'Male', value: 'male'},
-     {text: 'Female', value: 'female'}
+     {text: 'Male', value: 'Male'},
+     {text: 'Female', value: 'Female'}
 ]

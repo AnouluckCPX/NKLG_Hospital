@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Header, Segment } from 'semantic-ui-react'
+import { Button, Form, Header, Segment } from 'semantic-ui-react'
 
 export default observer(function LoginPage() {
      
@@ -14,7 +14,7 @@ export default observer(function LoginPage() {
      return (
           <>
                <div className='masthead'>
-                    <Segment className='card-login'>
+                    <Form className='card-login'>
                          <Header as='h2' >
                               Welcome To NKLG Hosital
                          </Header>
@@ -42,7 +42,7 @@ export default observer(function LoginPage() {
                          </div>
 
 
-                    </Segment >
+                    </Form >
                </div>
           </>
 

@@ -5,19 +5,18 @@ interface Props {
      placeholder: string;
      name: string;
      option: any;
-     value: any;
      label?: string;
 }
 
-export default function MySelectInput(props: Props) {
+export default function MySelectGender(props: Props) {
      const [field, meta, helpers] = useField(props.name)
      return (
           <Form.Field error={meta.touched && !!meta.error}>
                <label>{props.label}</label>
                <Select className='ui fluid dropdown'
                     clearable
-                    options={props.value}
-                    value={props.option}
+                    options={props.option}
+                    value={field.value || null}
                     onChange={(e, d) => helpers.setValue(d.value)}
                     onBlur={() => helpers.setTouched(true)}
                     placeholder={props.placeholder}
